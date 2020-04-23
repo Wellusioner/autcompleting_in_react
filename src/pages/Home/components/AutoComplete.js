@@ -16,9 +16,6 @@ class AutoComplete extends React.Component{
         this.handleRequest = throttle(this.handleRequest, 400);
     }
 
-    componentDidMount(){
-        this.handleRequest(this.state.value);
-    }
 
     handleChange = value => {
         this.setState({
