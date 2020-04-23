@@ -16,11 +16,16 @@ class AutoComplete extends React.Component{
         this.handleRequest = throttle(this.handleRequest, 400);
     }
 
+    componentDidMount(){
+        this.handleRequest(this.state.value);
+    }
+
     handleChange = value => {
         this.setState({
             value: value ? value : ''
+        }, () => {
+            this.handleRequest(this.state.value);
         });
-        this.handleRequest(this.state.value);
     };
 
     handleRequest = async word => {
