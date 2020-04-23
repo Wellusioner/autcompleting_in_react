@@ -3,6 +3,7 @@ import axios from 'axios'
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import throttle from 'lodash/throttle'
+import { API_ROOT } from "../../../service/api";
 
 class AutoComplete extends React.Component{
 
@@ -15,18 +16,17 @@ class AutoComplete extends React.Component{
         this.handleRequest = throttle(this.handleRequest, 400);
     }
 
-
     handleChange = value => {
         this.setState({
             value: value ? value : ''
         });
-        this.handleRequest();
+        this.handleRequest(this.state.value);
     };
 
-    handleRequest = async () => {
-        const result = await axios.get(`your api goes here`);
+    handleRequest = async word => {
+        const result = await axios.get(`${API_ROOT}/search?q=${word}`);
         this.setState({
-            data: [...result.data.post]
+            data: [...result.data.data]
         })
     };
 
@@ -36,7 +36,7 @@ class AutoComplete extends React.Component{
             <Autocomplete
                 id="combo-box-demo"
                 options={data}
-                getOptionLabel={(option) => option.title}
+                getOptionLabel={(option) => option.product}
                 onInputChange={(e,val) => this.handleChange(val)}
                 style={{ width: '100%' }}
                 renderInput={(params) => <TextField {...params} label="Type to search" variant="outlined" />}
